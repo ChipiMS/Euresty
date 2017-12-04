@@ -1,14 +1,17 @@
 package euresty.fxml;
 
 import euresty.FillTool;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +19,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
@@ -46,10 +51,16 @@ public class PaintFXController implements Initializable {
     ImageView textBtn;
     @FXML
     ImageView fillBtn;
+    @FXML
+    ComboBox comboFont;
+    @FXML
+    ComboBox comboSize;
+    @FXML
+    Button fontBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     
+     fillCombos();
         g = canvas.getGraphicsContext2D();
         g.setFill(javafx.scene.paint.Color.WHITE);
         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -94,6 +105,10 @@ public class PaintFXController implements Initializable {
                        
                     
                 }
+                if(event.getSource()==fontBtn)
+                {
+                    g.setFont(new Font((String)comboFont.getSelectionModel().getSelectedItem(), (int)comboSize.getSelectionModel().getSelectedItem()));
+                }
             }
         };
         
@@ -104,6 +119,7 @@ public class PaintFXController implements Initializable {
         pencilBtn.setOnMouseClicked(listenerImageButtons);
         textBtn.setOnMouseClicked(listenerImageButtons);
         fillBtn.setOnMouseClicked(listenerImageButtons);
+        fontBtn.setOnMouseClicked(listenerImageButtons);
     }
     
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
@@ -144,7 +160,6 @@ public class PaintFXController implements Initializable {
             if(result.isPresent()){
                 double x = e.getX();
                 double y = e.getY();
-                g.setFont(new Font("Arial", 18));
                 g.fillText(result.get(), x, y);
             }
         });
@@ -170,5 +185,16 @@ public class PaintFXController implements Initializable {
             
             
         });
+    }
+    
+    public void fillCombos()
+    {
+          for (int i = 12; i < 60; i++) {
+           comboSize.getItems().add(i);
+        }
+     String[] fonts=GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+     comboFont.getItems().addAll(fonts);
+     comboFont.getSelectionModel().selectFirst();
+     comboSize.getSelectionModel().selectFirst();
     }
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="euresty.fxml.PaintFXController">
+<BorderPane prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="euresty.fxml.PaintFXController">
     <stylesheets>
         <URL value="@paintfx.css"/>
     </stylesheets>
@@ -38,7 +38,10 @@
                             <Image url="images/fill.png" />
                         </image>
                     </ImageView>
-                    <ColorPicker fx:id="colorPicker" />
+                    <ComboBox fx:id="comboFont" prefWidth="150" prefHeight="10"/> 
+                    <ComboBox fx:id="comboSize" prefWidth="120" prefHeight="10"/> 
+                    <Button fx:id="fontBtn" prefWidth="50" prefHeight="10" text="Ok" />    
+                    <ColorPicker fx:id="colorPicker"/>
                     <Label fx:id="activeActionL"></Label>
                 </HBox>
             </ToolBar>
@@ -46,6 +49,6 @@
     </top>
 
     <center>
-        <Canvas fx:id="canvas" width="600" height="600" style="-fx-background: #FFFFFF;"/>
+        <Canvas fx:id="canvas" width="700" height="700" style="-fx-background: #FFFFFF;"/>
     </center> 
 </BorderPane>

@@ -12,7 +12,7 @@ public class Euresty extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("fxml/PaintFX.fxml"));
-        Scene scene = new Scene(root, 600, 600);
+        Scene scene = new Scene(root, 700, 700);
         stage.setTitle("PAINT");
         stage.setScene(scene);
         stage.show();
