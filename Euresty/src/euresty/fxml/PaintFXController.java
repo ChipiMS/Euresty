@@ -6,12 +6,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +18,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -48,6 +51,8 @@ public class PaintFXController implements Initializable {
     @FXML
     MenuItem saveBtn;
     @FXML
+    MenuItem exitBtn;
+    @FXML
     ImageView textBtn;
     @FXML
     ImageView fillBtn;
@@ -59,6 +64,8 @@ public class PaintFXController implements Initializable {
     Button fontBtn;
     @FXML
     ImageView eraseBtn;
+    //Bandera indica si se realizaron cambios antes de salir, verificar en dónde se ubica cada vez que se procesa
+    int bandera=0;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -76,6 +83,10 @@ public class PaintFXController implements Initializable {
                 //Aquí se llaman las funciones de los botones y menus
                 if(event.getSource() == saveBtn){
                     onSave();
+                }
+                
+                if(event.getSource()==exitBtn){
+                    onExit();
                 }
             }
         };
@@ -120,6 +131,7 @@ public class PaintFXController implements Initializable {
         
         //Aquí se agregan los botones y menus al listener de botones y menus
         saveBtn.setOnAction(listenerButtons);
+        exitBtn.setOnAction(listenerButtons);
         
         //Aquí se agregan las imagenes que sirven como botones al listener de imagenes que sirven como botones
         pencilBtn.setOnMouseClicked(listenerImageButtons);
@@ -127,6 +139,7 @@ public class PaintFXController implements Initializable {
         fillBtn.setOnMouseClicked(listenerImageButtons);
         fontBtn.setOnMouseClicked(listenerImageButtons);
         eraseBtn.setOnMouseClicked(listenerImageButtons);
+       
     }
     
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
@@ -141,6 +154,7 @@ public class PaintFXController implements Initializable {
     
     //Aquí se agregan las funciones de cada funcionalidad del proyecto
     public void onPencil(){
+        
                   canvas.setOnMouseClicked(null);
                        canvas.setOnMouseDragged(e -> {
             double size = 12;
@@ -151,12 +165,13 @@ public class PaintFXController implements Initializable {
             
                 g.setFill(colorPicker.getValue());
                 g.fillRect(x, y, size, size);
-            
+            bandera=1;  
         });
+                     
     }
     public void onSave() {
         try {
-            
+            bandera=0;
        
     Image snapshot = canvas.snapshot(null, null);
    ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("paint.png"));
@@ -178,8 +193,10 @@ public class PaintFXController implements Initializable {
                 double x = e.getX();
                 double y = e.getY();
                 g.fillText(result.get(), x, y);
+                bandera=1;
             }
         });
+       
     }
     public void onFill() throws IOException{
         g.setFill(colorPicker.getValue());
@@ -199,6 +216,7 @@ public class PaintFXController implements Initializable {
             f.flood((int)e.getX(), (int)e.getY());
             Image card=SwingFXUtils.toFXImage(f.getImgFilled(), null);
             g.drawImage(card, 0, 0);
+            bandera=1;
             
             
         });
@@ -215,6 +233,7 @@ public class PaintFXController implements Initializable {
             double y = e.getY() - size / 2;
             
              g.fillRect(x, y, size, size);
+             bandera=1;
          });
     }
     
@@ -227,5 +246,40 @@ public class PaintFXController implements Initializable {
      comboFont.getItems().addAll(fonts);
      comboFont.getSelectionModel().selectFirst();
      comboSize.getSelectionModel().selectFirst();
+     
+    }
+    
+    public void onExit()
+    {
+        if(bandera==1)
+        {
+        
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+alert.setTitle("Salir");
+
+alert.setHeaderText("¿Deseas salir sin guardar?");
+
+ButtonType buttonTypeOne = new ButtonType("Sí");
+ButtonType buttonTypeTwo = new ButtonType("No");
+ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+   Optional<ButtonType> result = alert.showAndWait();
+if (result.get() == buttonTypeOne){
+    Platform.exit();
+} 
+else if (result.get() == buttonTypeTwo) {
+   onSave();
+   Platform.exit();
+}
+else{
+    
+}
+
+        }
+        else
+        {
+            Platform.exit();
+        }
     }
 }
