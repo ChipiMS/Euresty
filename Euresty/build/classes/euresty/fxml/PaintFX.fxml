@@ -38,6 +38,11 @@
                             <Image url="images/fill.png" />
                         </image>
                     </ImageView>
+                     <ImageView fx:id="eraseBtn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/eraser.png" />
+                        </image>
+                    </ImageView>
                     <ComboBox fx:id="comboFont" prefWidth="150" prefHeight="10"/> 
                     <ComboBox fx:id="comboSize" prefWidth="120" prefHeight="10"/> 
                     <Button fx:id="fontBtn" prefWidth="50" prefHeight="10" text="Ok" />    

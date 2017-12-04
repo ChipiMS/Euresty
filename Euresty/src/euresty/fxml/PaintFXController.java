@@ -57,6 +57,8 @@ public class PaintFXController implements Initializable {
     ComboBox comboSize;
     @FXML
     Button fontBtn;
+    @FXML
+    ImageView eraseBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -109,6 +111,10 @@ public class PaintFXController implements Initializable {
                 {
                     g.setFont(new Font((String)comboFont.getSelectionModel().getSelectedItem(), (int)comboSize.getSelectionModel().getSelectedItem()));
                 }
+                if(event.getSource()==eraseBtn)
+                {
+                    onErase();
+                }
             }
         };
         
@@ -120,6 +126,7 @@ public class PaintFXController implements Initializable {
         textBtn.setOnMouseClicked(listenerImageButtons);
         fillBtn.setOnMouseClicked(listenerImageButtons);
         fontBtn.setOnMouseClicked(listenerImageButtons);
+        eraseBtn.setOnMouseClicked(listenerImageButtons);
     }
     
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
@@ -134,8 +141,18 @@ public class PaintFXController implements Initializable {
     
     //Aquí se agregan las funciones de cada funcionalidad del proyecto
     public void onPencil(){
-        selectNewAction("Lapiz");
-        System.out.println("No programado");
+                  canvas.setOnMouseClicked(null);
+                       canvas.setOnMouseDragged(e -> {
+            double size = 12;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+
+            
+            
+                g.setFill(colorPicker.getValue());
+                g.fillRect(x, y, size, size);
+            
+        });
     }
     public void onSave() {
         try {
@@ -185,6 +202,20 @@ public class PaintFXController implements Initializable {
             
             
         });
+    }
+    
+    
+    public void onErase()
+    {
+        g.setFill(javafx.scene.paint.Color.WHITE);
+        
+         canvas.setOnMouseDragged(e -> {
+            double size = 12;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+            
+             g.fillRect(x, y, size, size);
+         });
     }
     
     public void fillCombos()
