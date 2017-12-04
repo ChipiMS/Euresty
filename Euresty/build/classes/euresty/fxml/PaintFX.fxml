@@ -33,6 +33,11 @@
                             <Image url="images/A.png" />
                         </image>
                     </ImageView>
+                    <ImageView fx:id="fillBtn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/fill.png" />
+                        </image>
+                    </ImageView>
                     <ColorPicker fx:id="colorPicker" />
                     <Label fx:id="activeActionL"></Label>
                 </HBox>
@@ -41,6 +46,6 @@
     </top>
 
     <center>
-        <Canvas fx:id="canvas" width="600" height="600" />
+        <Canvas fx:id="canvas" width="600" height="600" style="-fx-background: #FFFFFF;"/>
     </center> 
 </BorderPane>

@@ -1,9 +1,14 @@
 package euresty.fxml;
 
+import euresty.FillTool;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +23,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javax.imageio.ImageIO;
 
 public class PaintFXController implements Initializable {
@@ -38,10 +44,16 @@ public class PaintFXController implements Initializable {
     MenuItem saveBtn;
     @FXML
     ImageView textBtn;
+    @FXML
+    ImageView fillBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+     
         g = canvas.getGraphicsContext2D();
+        g.setFill(javafx.scene.paint.Color.WHITE);
+        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+       
         
         EventHandler<ActionEvent> listenerButtons = new EventHandler<ActionEvent>() {
             @Override
@@ -65,7 +77,22 @@ public class PaintFXController implements Initializable {
                     onPencil();
                 }
                 if(event.getSource() == textBtn){
-                    onText();
+                      selectNewAction("Texto");
+                   canvas.setOnMouseClicked(e->{
+                       onText();
+                   });
+                }
+                if(event.getSource()== fillBtn){
+                   selectNewAction("Rellenar");
+                        canvas.setOnMouseClicked(e->{
+                            try {
+                                onFill();
+                            } catch (IOException ex) {
+                                Logger.getLogger(PaintFXController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        });
+                       
+                    
                 }
             }
         };
@@ -76,6 +103,7 @@ public class PaintFXController implements Initializable {
         //Aquí se agregan las imagenes que sirven como botones al listener de imagenes que sirven como botones
         pencilBtn.setOnMouseClicked(listenerImageButtons);
         textBtn.setOnMouseClicked(listenerImageButtons);
+        fillBtn.setOnMouseClicked(listenerImageButtons);
     }
     
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
@@ -95,14 +123,19 @@ public class PaintFXController implements Initializable {
     }
     public void onSave() {
         try {
-            Image snapshot = canvas.snapshot(null, null);
-            ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("paint.png"));
+            
+       
+    Image snapshot = canvas.snapshot(null, null);
+   ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("paint.png"));
+
+           
         } catch (Exception e) {
             System.out.println("Failed to save image: " + e);
         }
     }
     public void onText(){
-        selectNewAction("Texto");
+        g.setFill(colorPicker.getValue());
+      
         canvas.setOnMouseClicked(e->{
             TextInputDialog dialog = new TextInputDialog("Texto");
             dialog.setTitle("Ingresa texto");
@@ -111,8 +144,31 @@ public class PaintFXController implements Initializable {
             if(result.isPresent()){
                 double x = e.getX();
                 double y = e.getY();
+                g.setFont(new Font("Arial", 18));
                 g.fillText(result.get(), x, y);
             }
+        });
+    }
+    public void onFill() throws IOException{
+        g.setFill(colorPicker.getValue());
+          Image snapshot = canvas.snapshot(null, null);
+   ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("temp.png"));
+        BufferedImage image;
+        image = (BufferedImage)ImageIO.read(new File("temp.png"));
+        
+        canvas.setOnMouseClicked(e->{
+            javafx.scene.paint.Color color=colorPicker.getValue();
+          java.awt.Color awtColor = new java.awt.Color((float) color.getRed(),
+                                                       (float) color.getGreen(),
+                                                       (float) color.getBlue(),
+                                                       (float) color.getOpacity());
+
+            FillTool f=new FillTool((int)e.getX(),(int)e.getY(),(int)canvas.getWidth(),(int)canvas.getHeight(),awtColor,image);
+            f.flood((int)e.getX(), (int)e.getY());
+            Image card=SwingFXUtils.toFXImage(f.getImgFilled(), null);
+            g.drawImage(card, 0, 0);
+            
+            
         });
     }
 }
