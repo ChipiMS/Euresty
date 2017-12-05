@@ -273,12 +273,10 @@ else if (result.get() == buttonTypeTwo) {
    Platform.exit();
 }
 else{
-    
+    alert.close();
 }
-
-        }
-        else
-        {
+  }
+    else {
             Platform.exit();
         }
     }
