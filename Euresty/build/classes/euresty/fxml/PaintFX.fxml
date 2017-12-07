@@ -18,7 +18,9 @@
         <VBox>
             <MenuBar>
                 <Menu text="Archivo">
+                    <MenuItem fx:id="newBtn" text="Nuevo"/>
                     <MenuItem fx:id="saveBtn" text="Guardar"/>
+                    <MenuItem fx:id="openBtn" text="Abrir"/>
                     <MenuItem fx:id="exitBtn" text="Salir"/>
                 </Menu>
             </MenuBar>
