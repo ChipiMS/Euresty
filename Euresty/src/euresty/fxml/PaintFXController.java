@@ -47,29 +47,31 @@ public class PaintFXController implements Initializable {
     
     //Aquí se declaran los botones e imagenes
     @FXML
-    ImageView pencilBtn;
+    ImageView airbrushBtn;
     @FXML
-    MenuItem saveBtn;
-    @FXML
-    MenuItem exitBtn;
-    @FXML
-    ImageView textBtn;
-    @FXML
-    ImageView fillBtn;
+    ImageView calligraphicBrush2Btn;
     @FXML
     ComboBox comboFont;
     @FXML
     ComboBox comboSize;
     @FXML
-    Button fontBtn;
-    @FXML
     ImageView eraseBtn;
+    @FXML
+    MenuItem exitBtn;
+    @FXML
+    ImageView fillBtn;
+    @FXML
+    ImageView pencilBtn;
+    @FXML
+    MenuItem saveBtn;
+    @FXML
+    ImageView textBtn;
     //Bandera indica si se realizaron cambios antes de salir, verificar en dónde se ubica cada vez que se procesa
     int bandera=0;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     fillCombos();
+        fillCombos();
         g = canvas.getGraphicsContext2D();
         g.setFill(javafx.scene.paint.Color.WHITE);
         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -78,14 +80,24 @@ public class PaintFXController implements Initializable {
         EventHandler<ActionEvent> listenerButtons = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                g.setFill(colorPicker.getValue());
-                
                 //Aquí se llaman las funciones de los botones y menus
+                if(event.getSource() == colorPicker){
+                    g.setFill(colorPicker.getValue());
+                }
+                
+                if(event.getSource() == comboFont){
+                    g.setFont(new Font((String)comboFont.getSelectionModel().getSelectedItem(), (int)comboSize.getSelectionModel().getSelectedItem()));
+                }
+                
+                if(event.getSource() == comboSize){
+                    g.setFont(new Font((String)comboFont.getSelectionModel().getSelectedItem(), (int)comboSize.getSelectionModel().getSelectedItem()));
+                }
+                
                 if(event.getSource() == saveBtn){
                     onSave();
                 }
                 
-                if(event.getSource()==exitBtn){
+                if(event.getSource() == exitBtn){
                     onExit();
                 }
             }
@@ -94,58 +106,58 @@ public class PaintFXController implements Initializable {
         EventHandler<MouseEvent> listenerImageButtons = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                g.setFill(colorPicker.getValue());
-                
                 //Aquí se llaman las funciones de las imagenes que sirven como botones
+                if(event.getSource() == airbrushBtn){
+                    onAirbrush();
+                }
+                
+                if(event.getSource() == calligraphicBrush2Btn){
+                    onCalligraphicBrush2();
+                }
+                
                 if(event.getSource() == pencilBtn){
                     onPencil();
                 }
+                
                 if(event.getSource() == textBtn){
-                      selectNewAction("Texto");
-                   canvas.setOnMouseClicked(e->{
-                       onText();
-                   });
+                    onText();
                 }
+                
                 if(event.getSource()== fillBtn){
-                   selectNewAction("Rellenar");
-                        canvas.setOnMouseClicked(e->{
-                            try {
-                                onFill();
-                            } catch (IOException ex) {
-                                Logger.getLogger(PaintFXController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        });
-                       
-                    
+                    try {
+                        onFill();
+                    } catch (IOException ex) {
+                        Logger.getLogger(PaintFXController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                if(event.getSource()==fontBtn)
-                {
-                    g.setFont(new Font((String)comboFont.getSelectionModel().getSelectedItem(), (int)comboSize.getSelectionModel().getSelectedItem()));
-                }
-                if(event.getSource()==eraseBtn)
-                {
+                
+                if(event.getSource()==eraseBtn){
                     onErase();
                 }
             }
         };
         
         //Aquí se agregan los botones y menus al listener de botones y menus
-        saveBtn.setOnAction(listenerButtons);
+        colorPicker.setOnAction(listenerButtons);
+        comboFont.setOnAction(listenerButtons);
+        comboSize.setOnAction(listenerButtons);
         exitBtn.setOnAction(listenerButtons);
+        saveBtn.setOnAction(listenerButtons);
         
         //Aquí se agregan las imagenes que sirven como botones al listener de imagenes que sirven como botones
+        airbrushBtn.setOnMouseClicked(listenerImageButtons);
+        calligraphicBrush2Btn.setOnMouseClicked(listenerImageButtons);
+        eraseBtn.setOnMouseClicked(listenerImageButtons);
+        fillBtn.setOnMouseClicked(listenerImageButtons);
         pencilBtn.setOnMouseClicked(listenerImageButtons);
         textBtn.setOnMouseClicked(listenerImageButtons);
-        fillBtn.setOnMouseClicked(listenerImageButtons);
-        fontBtn.setOnMouseClicked(listenerImageButtons);
-        eraseBtn.setOnMouseClicked(listenerImageButtons);
-       
     }
     
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
     public void selectNewAction(String accion){
         activeAction = accion;
         activeActionL.setText(accion);
+        g.setFill(colorPicker.getValue());
         
         //Si se agrega un nuevo evento en el canvas se tiene que agregar aquí
         canvas.setOnMouseDragged(null);
@@ -153,37 +165,111 @@ public class PaintFXController implements Initializable {
     }
     
     //Aquí se agregan las funciones de cada funcionalidad del proyecto
-    public void onPencil(){
-        
-                  canvas.setOnMouseClicked(null);
-                       canvas.setOnMouseDragged(e -> {
+    public void onAirbrush(){
+        selectNewAction("Aerógrafo");
+        canvas.setOnMouseDragged(e -> {
             double size = 12;
             double x = e.getX() - size / 2;
             double y = e.getY() - size / 2;
+            g.fillRect(x, y, size, size);
+            bandera=1;
+        });
+    }
+    
+    public void onCalligraphicBrush2(){
+        selectNewAction("Pincel caligráfico 2");
+        canvas.setOnMouseDragged(e -> {
+            double size = 12;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+            g.fillRect(x, y, size, size);
+            bandera=1;
+        });
+    }
+    
+    public void onErase(){
+        selectNewAction("Borrador");
+        g.setFill(javafx.scene.paint.Color.WHITE);
+        canvas.setOnMouseDragged(e -> {
+            double size = 12;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+            g.fillRect(x, y, size, size);
+            bandera=1;
+        });
+    }
+    
+    public void onExit(){
+        if(bandera==1){
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Salir");
 
-            
-            
-                g.setFill(colorPicker.getValue());
-                g.fillRect(x, y, size, size);
+            alert.setHeaderText("¿Deseas salir sin guardar?");
+
+            ButtonType buttonTypeOne = new ButtonType("Sí");
+            ButtonType buttonTypeTwo = new ButtonType("No");
+            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonTypeOne){
+                Platform.exit();
+            } 
+            else if (result.get() == buttonTypeTwo) {
+               onSave();
+               Platform.exit();
+            }
+            else{
+                alert.close();
+            }
+        }
+        else {
+            Platform.exit();
+        }
+    }
+    
+    public void onFill() throws IOException{
+        selectNewAction("Rellenar");
+        Image snapshot = canvas.snapshot(null, null);
+        ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("temp.png"));
+        BufferedImage image;
+        image = (BufferedImage)ImageIO.read(new File("temp.png"));
+        canvas.setOnMouseClicked(e->{
+            javafx.scene.paint.Color color=colorPicker.getValue();
+            java.awt.Color awtColor = new java.awt.Color((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
+
+            FillTool f=new FillTool((int)e.getX(),(int)e.getY(),(int)canvas.getWidth(),(int)canvas.getHeight(),awtColor,image);
+            f.flood((int)e.getX(), (int)e.getY());
+            Image card=SwingFXUtils.toFXImage(f.getImgFilled(), null);
+            g.drawImage(card, 0, 0);
+            bandera=1;
+        });
+    }
+    
+    public void onPencil(){
+        selectNewAction("Lápiz");
+        canvas.setOnMouseDragged(e -> {
+            double size = 12;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+            g.setFill(colorPicker.getValue());
+            g.fillRect(x, y, size, size);
             bandera=1;  
         });
-                     
     }
+    
     public void onSave() {
         try {
             bandera=0;
-       
-    Image snapshot = canvas.snapshot(null, null);
-   ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("paint.png"));
-
-           
+            Image snapshot = canvas.snapshot(null, null);
+            ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("paint.png"));
         } catch (Exception e) {
             System.out.println("Failed to save image: " + e);
         }
     }
+    
     public void onText(){
-        g.setFill(colorPicker.getValue());
-      
+        selectNewAction("Texto");
         canvas.setOnMouseClicked(e->{
             TextInputDialog dialog = new TextInputDialog("Texto");
             dialog.setTitle("Ingresa texto");
@@ -196,88 +282,16 @@ public class PaintFXController implements Initializable {
                 bandera=1;
             }
         });
-       
-    }
-    public void onFill() throws IOException{
-        g.setFill(colorPicker.getValue());
-          Image snapshot = canvas.snapshot(null, null);
-   ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("temp.png"));
-        BufferedImage image;
-        image = (BufferedImage)ImageIO.read(new File("temp.png"));
-        
-        canvas.setOnMouseClicked(e->{
-            javafx.scene.paint.Color color=colorPicker.getValue();
-          java.awt.Color awtColor = new java.awt.Color((float) color.getRed(),
-                                                       (float) color.getGreen(),
-                                                       (float) color.getBlue(),
-                                                       (float) color.getOpacity());
-
-            FillTool f=new FillTool((int)e.getX(),(int)e.getY(),(int)canvas.getWidth(),(int)canvas.getHeight(),awtColor,image);
-            f.flood((int)e.getX(), (int)e.getY());
-            Image card=SwingFXUtils.toFXImage(f.getImgFilled(), null);
-            g.drawImage(card, 0, 0);
-            bandera=1;
-            
-            
-        });
     }
     
-    
-    public void onErase()
-    {
-        g.setFill(javafx.scene.paint.Color.WHITE);
-        
-         canvas.setOnMouseDragged(e -> {
-            double size = 12;
-            double x = e.getX() - size / 2;
-            double y = e.getY() - size / 2;
-            
-             g.fillRect(x, y, size, size);
-             bandera=1;
-         });
-    }
-    
-    public void fillCombos()
-    {
-          for (int i = 12; i < 60; i++) {
+    //Aquí pones funciones auxiliares si se necesitan
+    public void fillCombos(){
+        for (int i = 12; i < 60; i++) {
            comboSize.getItems().add(i);
         }
-     String[] fonts=GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-     comboFont.getItems().addAll(fonts);
-     comboFont.getSelectionModel().selectFirst();
-     comboSize.getSelectionModel().selectFirst();
-     
-    }
-    
-    public void onExit()
-    {
-        if(bandera==1)
-        {
-        
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-alert.setTitle("Salir");
-
-alert.setHeaderText("¿Deseas salir sin guardar?");
-
-ButtonType buttonTypeOne = new ButtonType("Sí");
-ButtonType buttonTypeTwo = new ButtonType("No");
-ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
-   Optional<ButtonType> result = alert.showAndWait();
-if (result.get() == buttonTypeOne){
-    Platform.exit();
-} 
-else if (result.get() == buttonTypeTwo) {
-   onSave();
-   Platform.exit();
-}
-else{
-    alert.close();
-}
-  }
-    else {
-            Platform.exit();
-        }
+        String[] fonts=GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        comboFont.getItems().addAll(fonts);
+        comboFont.getSelectionModel().selectFirst();
+        comboSize.getSelectionModel().selectFirst();
     }
 }
