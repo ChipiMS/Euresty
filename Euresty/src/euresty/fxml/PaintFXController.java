@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -167,22 +168,44 @@ public class PaintFXController implements Initializable {
     //Aquí se agregan las funciones de cada funcionalidad del proyecto
     public void onAirbrush(){
         selectNewAction("Aerógrafo");
+        canvas.setOnMouseClicked(e -> {
+            Random rand = new Random();
+            int i, j, x = (int) (e.getX()), y = (int) (e.getY());
+            for(i = y-4;i <= y+4;i++){
+                for(j = x-4;j <= x+4; j++){
+                    if(Math.sqrt((x-j)*(x-j)+(y-i)*(y-i)) < 4.5 && rand.nextBoolean()){
+                        g.fillRect(j, i, 1, 1);
+                    }
+                }
+            }
+            bandera=1;
+        });
         canvas.setOnMouseDragged(e -> {
-            double size = 12;
-            double x = e.getX() - size / 2;
-            double y = e.getY() - size / 2;
-            g.fillRect(x, y, size, size);
+            Random rand = new Random();
+            int i, j, x = (int) (e.getX()), y = (int) (e.getY());
+            for(i = y-4;i <= y+4;i++){
+                for(j = x-4;j <= x+4; j++){
+                    if(Math.sqrt((x-j)*(x-j)+(y-i)*(y-i)) < 4.5 && rand.nextBoolean()){
+                        g.fillRect(j, i, 1, 1);
+                    }
+                }
+            }
             bandera=1;
         });
     }
     
     public void onCalligraphicBrush2(){
         selectNewAction("Pincel caligráfico 2");
+        canvas.setOnMouseClicked(e -> {
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeLine(x-2, y+2, x+2, y-2);
+            bandera=1;
+        });
         canvas.setOnMouseDragged(e -> {
-            double size = 12;
-            double x = e.getX() - size / 2;
-            double y = e.getY() - size / 2;
-            g.fillRect(x, y, size, size);
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeLine(x-2, y+2, x+2, y-2);
             bandera=1;
         });
     }
