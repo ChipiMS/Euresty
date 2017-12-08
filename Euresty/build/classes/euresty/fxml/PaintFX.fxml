@@ -18,7 +18,9 @@
         <VBox>
             <MenuBar>
                 <Menu text="Archivo">
+                    <MenuItem fx:id="newBtn" text="Nuevo"/>
                     <MenuItem fx:id="saveBtn" text="Guardar"/>
+                    <MenuItem fx:id="openBtn" text="Abrir"/>
                     <MenuItem fx:id="exitBtn" text="Salir"/>
                 </Menu>
             </MenuBar>
@@ -44,9 +46,43 @@
                             <Image url="images/eraser.png" />
                         </image>
                     </ImageView>
-                    <ComboBox fx:id="comboFont" prefWidth="150" prefHeight="10"/> 
-                    <ComboBox fx:id="comboSize" prefWidth="120" prefHeight="10"/> 
-                    <Button fx:id="fontBtn" prefWidth="50" prefHeight="10" text="Ok" />    
+                    <ImageView fx:id="pincelBtn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/pincel.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="calligraphicBrush1Btn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/calligraphicBrush1.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="calligraphicBrush2Btn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/calligraphicBrush2.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="airbrushBtn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/airbrush.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="dzpBtn1" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/plumon.jpg" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="dzpBtn2" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/pincelz.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="dzpBtn3" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/pincel2.jpg" />
+                        </image>
+                    </ImageView>
+                    <ComboBox fx:id="comboFont" prefWidth="150" prefHeight="10"/>
+                    <ComboBox fx:id="comboSize" prefWidth="120" prefHeight="10"/>
                     <ColorPicker fx:id="colorPicker"/>
                     <Label fx:id="activeActionL"></Label>
                 </HBox>
