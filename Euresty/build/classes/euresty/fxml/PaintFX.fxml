@@ -46,6 +46,16 @@
                             <Image url="images/eraser.png" />
                         </image>
                     </ImageView>
+                    <ImageView fx:id="pincelBtn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/pincel.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="calligraphicBrush1Btn" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/calligraphicBrush1.png" />
+                        </image>
+                    </ImageView>
                     <ImageView fx:id="calligraphicBrush2Btn" fitHeight="20.0" fitWidth="20.0">
                            <image>
                             <Image url="images/calligraphicBrush2.png" />

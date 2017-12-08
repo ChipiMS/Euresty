@@ -52,6 +52,10 @@ public class PaintFXController implements Initializable {
 
     //Aquí se declaran los botones e imagenes
     @FXML
+    ImageView pincelBtn;
+    @FXML
+    ImageView calligraphicBrush1Btn;
+    @FXML
     ImageView airbrushBtn;
     @FXML
     ImageView calligraphicBrush2Btn;
@@ -123,6 +127,14 @@ public class PaintFXController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 //Aquí se llaman las funciones de las imagenes que sirven como botones
+                if (event.getSource() == pincelBtn) {
+                    onPincel();
+                }
+                
+                if (event.getSource() == calligraphicBrush1Btn) {
+                    onCalligraphicBrush1();
+                }
+                
                 if (event.getSource() == airbrushBtn) {
                     onAirbrush();
                 }
@@ -163,6 +175,8 @@ public class PaintFXController implements Initializable {
         openBtn.setOnAction(listenerButtons);
 
         //Aquí se agregan las imagenes que sirven como botones al listener de imagenes que sirven como botones
+        pincelBtn.setOnMouseClicked(listenerImageButtons);
+        calligraphicBrush1Btn.setOnMouseClicked(listenerImageButtons);
         airbrushBtn.setOnMouseClicked(listenerImageButtons);
         calligraphicBrush2Btn.setOnMouseClicked(listenerImageButtons);
         eraseBtn.setOnMouseClicked(listenerImageButtons);
@@ -183,6 +197,40 @@ public class PaintFXController implements Initializable {
     }
 
     //Aquí se agregan las funciones de cada funcionalidad del proyecto
+    public void onPincel() {
+        selectNewAction("Pincel");
+        canvas.setOnMouseClicked(e -> {
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeLine(x - 1, y, x + 1, y);
+            g.strokeLine(x - 1, y - 1, x + 1, y - 1);
+            bandera = 1;
+        });
+        canvas.setOnMouseDragged(e -> {
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeLine(x - 1, y, x + 1, y);
+            g.strokeLine(x - 1, y - 1, x + 1, y - 1);
+            bandera = 1;
+        });
+    }
+    
+    public void onCalligraphicBrush1() {
+        selectNewAction("Pincel caligráfico 1");
+        canvas.setOnMouseClicked(e -> {
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeLine(x - 2, y - 2, x + 2, y + 2);
+            bandera = 1;
+        });
+        canvas.setOnMouseDragged(e -> {
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeLine(x - 2, y - 2, x + 2, y + 2);
+            bandera = 1;
+        });
+    }
+    
     public void onAirbrush() {
         selectNewAction("Aerógrafo");
         canvas.setOnMouseClicked(e -> {
