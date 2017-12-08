@@ -14,6 +14,6 @@ Luego se pone lo que agregaron al ambiente local en el ambiente de producción o
 
 Después se prueba el ambiente de producción.
 
-Cuando todo está bien se pone en la consola "git add *" y luego Luego poner "git commit -m "Aquí pones una descripción de lo que agregaste""
+Cuando todo está bien se pone en la consola "git add *" y luego Luego poner "git commit -m "Aquí pones una descripción de lo que agregaste"" y luego "git push origin master".
 
 Notas: Con la variable g se agregan cosas al canvas, las imagenes se guardan en src/images.
