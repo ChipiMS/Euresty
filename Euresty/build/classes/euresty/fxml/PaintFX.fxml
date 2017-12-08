@@ -76,6 +76,11 @@
                             <Image url="images/pincelz.png" />
                         </image>
                     </ImageView>
+                    <ImageView fx:id="dzpBtn3" fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                            <Image url="images/pincel2.jpg" />
+                        </image>
+                    </ImageView>
                     <ComboBox fx:id="comboFont" prefWidth="150" prefHeight="10"/>
                     <ComboBox fx:id="comboSize" prefWidth="120" prefHeight="10"/>
                     <ColorPicker fx:id="colorPicker"/>

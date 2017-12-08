@@ -33,6 +33,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
@@ -85,6 +86,8 @@ public class PaintFXController implements Initializable {
     ImageView dzpBtn1;
     @FXML
     ImageView dzpBtn2;
+    @FXML
+    ImageView dzpBtn3;
     //Bandera indica si se realizaron cambios antes de salir, verificar en dónde se ubica cada vez que se procesa
     int bandera = 0;
 
@@ -177,6 +180,11 @@ public class PaintFXController implements Initializable {
                 {
                     onPincelz();
                 }
+                // dzp y abc
+                if(event.getSource() == dzpBtn3)
+                {
+                    onPincel2();
+                }
             }
         };
 
@@ -200,6 +208,7 @@ public class PaintFXController implements Initializable {
         textBtn.setOnMouseClicked(listenerImageButtons);
         dzpBtn1.setOnMouseClicked(listenerImageButtons); // dzp y abc
         dzpBtn2.setOnMouseClicked(listenerImageButtons); // dzp y abc
+        dzpBtn3.setOnMouseClicked(listenerImageButtons); // dzp y abc
     }
 
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
@@ -389,6 +398,23 @@ public class PaintFXController implements Initializable {
             double y = e.getY() - size / 2;
             g.setFill(colorPicker.getValue());
             g.fillOval(x, y, size, size);
+            bandera = 1;
+        });
+    }
+    
+    //dzp y abc
+    public void onPincel2() {
+        selectNewAction("Pincel gráfico");
+        canvas.setOnMouseClicked(e -> {
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeArc(x, y, 30, 30, 45, 90, ArcType.CHORD);
+            bandera = 1;
+        });
+        canvas.setOnMouseDragged(e -> {
+            double x = e.getX();
+            double y = e.getY();
+            g.strokeArc(x, y, 30, 30, 45, 90, ArcType.CHORD);
             bandera = 1;
         });
     }
