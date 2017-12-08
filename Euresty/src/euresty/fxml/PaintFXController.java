@@ -329,7 +329,12 @@ public class PaintFXController implements Initializable {
             if (result.get() == buttonTypeOne) {
                 Platform.exit();
             } else if (result.get() == buttonTypeTwo) {
+<<<<<<< HEAD
                alert.close();
+=======
+                onSave();
+                Platform.exit();
+>>>>>>> 6d7e4eb81f0e7fd6a69cd4c08b10ef14cda5e3f2
             } else {
                 alert.close();
             }
