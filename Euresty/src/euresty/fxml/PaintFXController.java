@@ -81,6 +81,10 @@ public class PaintFXController implements Initializable {
     ImageView textBtn;
     @FXML
     ImageView openV;
+    @FXML
+    ImageView dzpBtn1;
+    @FXML
+    ImageView dzpBtn2;
     //Bandera indica si se realizaron cambios antes de salir, verificar en dónde se ubica cada vez que se procesa
     int bandera = 0;
 
@@ -162,6 +166,17 @@ public class PaintFXController implements Initializable {
                 if (event.getSource() == eraseBtn) {
                     onErase();
                 }
+                
+                // dzp y abc
+                if(event.getSource() == dzpBtn1)
+                {
+                    onPlumon();
+                }
+                // dzp y abc
+                if(event.getSource() == dzpBtn2)
+                {
+                    onPincelz();
+                }
             }
         };
 
@@ -183,6 +198,8 @@ public class PaintFXController implements Initializable {
         fillBtn.setOnMouseClicked(listenerImageButtons);
         pencilBtn.setOnMouseClicked(listenerImageButtons);
         textBtn.setOnMouseClicked(listenerImageButtons);
+        dzpBtn1.setOnMouseClicked(listenerImageButtons); // dzp y abc
+        dzpBtn2.setOnMouseClicked(listenerImageButtons); // dzp y abc
     }
 
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
@@ -339,6 +356,39 @@ public class PaintFXController implements Initializable {
             double y = e.getY() - size / 2;
             g.setFill(colorPicker.getValue());
             g.fillRect(x, y, size, size);
+            bandera = 1;
+        });
+    }
+    
+    // dzp y abc
+    public void onPlumon() {
+        selectNewAction("Plumon");
+        canvas.setOnMouseDragged(e -> {
+            double size = 22;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+            
+            int i, j;
+            
+            for(i=0;i<22;i+=3)
+                for(j=0;j<22;j+=2)
+                    if(Math.pow(-11+i, 2)+Math.pow(-11+j, 2) <= 121)
+                        g.fillRect(x+i, y+j, 1, 1);
+            
+            g.setFill(colorPicker.getValue());
+            bandera = 1;
+        });
+    }
+    
+    // dzp y abc
+    public void onPincelz() {
+        selectNewAction("Pincel");
+        canvas.setOnMouseDragged(e -> {
+            double size = 8;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+            g.setFill(colorPicker.getValue());
+            g.fillOval(x, y, size, size);
             bandera = 1;
         });
     }
