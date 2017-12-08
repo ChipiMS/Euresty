@@ -89,6 +89,8 @@ public class PaintFXController implements Initializable {
     @FXML
     ImageView dzpBtn3;
     //Bandera indica si se realizaron cambios antes de salir, verificar en dónde se ubica cada vez que se procesa
+    @FXML
+    ImageView btnRectangulo, Circulo, Elipse, Triangulo, Screen;
     int bandera = 0;
 
     @Override
@@ -185,6 +187,27 @@ public class PaintFXController implements Initializable {
                 {
                     onPincel2();
                 }
+                  if(event.getSource() == btnRectangulo)
+                {
+                    onRectangulo();
+                }
+               if(event.getSource() == Circulo)
+                {
+                    onCirculo();
+                }
+               if(event.getSource() == Elipse)
+                {
+                    onElipse();
+                }
+               if(event.getSource() == Triangulo)
+                {
+                    onTriangulo();
+                }
+               
+               if(event.getSource() == Screen)
+                {
+                    onDialogo();
+                }
             }
         };
 
@@ -209,6 +232,11 @@ public class PaintFXController implements Initializable {
         dzpBtn1.setOnMouseClicked(listenerImageButtons); // dzp y abc
         dzpBtn2.setOnMouseClicked(listenerImageButtons); // dzp y abc
         dzpBtn3.setOnMouseClicked(listenerImageButtons); // dzp y abc
+        btnRectangulo.setOnMouseClicked(listenerImageButtons);
+        Circulo.setOnMouseClicked(listenerImageButtons);
+        Elipse.setOnMouseClicked(listenerImageButtons);
+        Triangulo.setOnMouseClicked(listenerImageButtons);
+        Screen.setOnMouseClicked(listenerImageButtons);
     }
 
     //Las funciones que cambian el comportamiento del canvas deben llevar esta función al principio
@@ -329,12 +357,8 @@ public class PaintFXController implements Initializable {
             if (result.get() == buttonTypeOne) {
                 Platform.exit();
             } else if (result.get() == buttonTypeTwo) {
-<<<<<<< HEAD
-               alert.close();
-=======
                 onSave();
                 Platform.exit();
->>>>>>> 6d7e4eb81f0e7fd6a69cd4c08b10ef14cda5e3f2
             } else {
                 alert.close();
             }
@@ -422,6 +446,79 @@ public class PaintFXController implements Initializable {
             bandera = 1;
         });
     }
+    
+     public void onRectangulo(){
+        selectNewAction("Cuadrado");
+        canvas.setOnMouseClicked(e->{
+             double size = 100;
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+             g.setFill(colorPicker.getValue());
+             //g.fillRect(x, y, size, size);
+             g.strokeRect(x, y, size, size);
+             bandera=1;
+        });
+    }
+        
+        public void onCirculo(){
+            selectNewAction("Circulo");
+            canvas.setOnMouseClicked(e->{
+                 double size = 70;
+                double x = e.getX() - size / 2;
+                double y = e.getY() - size / 2;
+                 g.setFill(colorPicker.getValue());
+                 g.strokeOval(x, y, size, size);
+                 bandera=1;
+            });
+        }
+        
+        public void onElipse(){
+            selectNewAction("Elipse");
+            canvas.setOnMouseClicked(e->{
+                 double size = 70;
+                 double size2=100;
+                double x = e.getX() - size / 2;
+                double y = e.getY() - size2 / 2;
+                 g.setFill(colorPicker.getValue());
+                 g.strokeOval(x, y, size, size2);
+                 bandera=1;
+            });
+        }
+        
+       public void onTriangulo(){
+            selectNewAction("Triangulo");
+            canvas.setOnMouseClicked(e->{
+                 double size = 1;
+                 double size2=100;
+                double x = e.getX() - size / 2;
+                double y = e.getY() - size / 2;
+                g.beginPath();
+                g.moveTo(x+25, y);
+                g.lineTo(x+50, y+25);
+                g.lineTo(x+50, y-25);
+                g.closePath();
+                g.stroke();
+                g.setFill(colorPicker.getValue());
+                bandera=1;
+            });
+        }
+       
+       public void onDialogo(){
+            selectNewAction("screen");
+            canvas.setOnMouseClicked(e->{
+                
+                g.beginPath();
+                g.moveTo(75,25);
+                g.quadraticCurveTo(25,25,25,62.5);
+                g.quadraticCurveTo(25,100,50,100);
+                g.quadraticCurveTo(50,120,30,125);
+                g.quadraticCurveTo(60,120,65,100);
+                g.quadraticCurveTo(125,100,125,62.5);
+                g.quadraticCurveTo(125,25,75,25);
+                g.stroke();
+                bandera=1;
+            });
+       }
 
     public void onSave() {
         try {

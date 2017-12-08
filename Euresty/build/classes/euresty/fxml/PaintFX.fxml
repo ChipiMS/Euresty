@@ -81,6 +81,31 @@
                             <Image url="images/pincel2.jpg" />
                         </image>
                     </ImageView>
+                    <ImageView fx:id="btnRectangulo" fitHeight="20.0" fitWidth="20.0">
+                               <image>
+                                <Image url="images/rectangulo.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="Circulo" fitHeight="20.0" fitWidth="20.0">
+                               <image>
+                                <Image url="images/circulo.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="Elipse" fitHeight="20.0" fitWidth="20.0">
+                               <image>
+                                <Image url="images/circulo.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="Triangulo" fitHeight="20.0" fitWidth="20.0">
+                               <image>
+                                <Image url="images/triangulo.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="Screen" fitHeight="20.0" fitWidth="20.0">
+                               <image>
+                                <Image url="images/screen.png" />
+                            </image>
+                        </ImageView>
                     <ComboBox fx:id="comboFont" prefWidth="150" prefHeight="10"/>
                     <ComboBox fx:id="comboSize" prefWidth="120" prefHeight="10"/>
                     <ColorPicker fx:id="colorPicker"/>
