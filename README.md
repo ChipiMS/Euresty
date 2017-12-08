@@ -17,3 +17,11 @@ Después se prueba el ambiente de producción.
 Cuando todo está bien se pone en la consola "git add *" y luego Luego poner "git commit -m "Aquí pones una descripción de lo que agregaste"" y luego "git push origin master".
 
 Notas: Con la variable g se agregan cosas al canvas, las imagenes se guardan en src/images.
+
+Si dio conflicto, vuelve a clonar en otro lugar y copias y pegas el código que hiciste sobre el nuevo, no todo el código, sólo lo que modificaste y vuelve al último punto que dice Cuando todo está bien se pone en la consola "git add *"...
+
+git clone...clona el proyecto o lo descarga.
+git pull... trae los últimos cambios.
+git add * agrega todos los cambios.
+git commit... empaqueta esos cambios para subirlos.
+git push... manda los nuevos cambios.
